@@ -36,6 +36,13 @@ export function LandingPage() {
             Open the builder
           </Link>
         </div>
+
+        <div aria-hidden="true" className="hero-decorations">
+          <span className="hero-food hero-food-carrot" />
+          <span className="hero-food hero-food-apple" />
+          <span className="hero-food hero-food-milk" />
+          <span className="hero-food hero-food-cheese" />
+        </div>
       </section>
 
       <section className="info-grid">

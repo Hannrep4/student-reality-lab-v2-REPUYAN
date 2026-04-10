@@ -106,10 +106,63 @@ h3 {
 }
 
 .hero-panel {
+  position: relative;
+  overflow: visible;
   padding: 4rem;
   background:
     radial-gradient(circle at right top, rgba(216, 93, 47, 0.2), transparent 32%),
     rgba(255, 252, 246, 0.88);
+}
+
+.hero-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-food {
+  position: absolute;
+  width: clamp(58px, 7vw, 84px);
+  aspect-ratio: 1 / 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.86;
+  filter: drop-shadow(0 8px 12px rgba(30, 36, 48, 0.16));
+}
+
+.hero-food-carrot {
+  top: -18px;
+  left: -16px;
+  transform: rotate(-18deg);
+  background-image: url('/images/carrot.png');
+}
+
+.hero-food-apple {
+  top: -20px;
+  right: -14px;
+  transform: rotate(13deg);
+  background-image: url('/images/apple.png');
+}
+
+.hero-food-milk {
+  bottom: -18px;
+  left: -12px;
+  transform: rotate(14deg);
+  background-image: url('/images/milk.png');
+}
+
+.hero-food-cheese {
+  bottom: -20px;
+  right: -12px;
+  transform: rotate(-16deg);
+  background-image: url('/images/cheese.png');
 }
 
 .eyebrow {
@@ -492,6 +545,21 @@ select {
   .builder-panel,
   .basket-panel {
     padding: 1.5rem;
+  }
+
+  .hero-food {
+    width: clamp(46px, 12vw, 64px);
+    opacity: 0.8;
+  }
+
+  .hero-food-carrot,
+  .hero-food-milk {
+    left: -8px;
+  }
+
+  .hero-food-apple,
+  .hero-food-cheese {
+    right: -8px;
   }
 
   .hero-metrics,
