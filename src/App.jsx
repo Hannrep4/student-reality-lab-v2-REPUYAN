@@ -3,6 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { groceryCatalog } from './data/groceryData';
 import { loadCatalogFromCsv } from './data/loadGroceryCatalog';
 import { AIChatWidget } from './components/AIChatWidget';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { BuilderPage } from './pages/BuilderPage';
 import { GeneratorPage } from './pages/GeneratorPage';
 import { LandingPage } from './pages/LandingPage';
@@ -71,6 +72,7 @@ function App() {
       </main>
 
       <AIChatWidget />
+      <ScrollToTopButton />
     </div>
   );
 }

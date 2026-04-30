@@ -13,6 +13,18 @@ const catalogGroupOrder = [
   'Snacks',
 ];
 
+const catalogGroupEmoji = {
+  Fruits: '🍎',
+  Vegetables: '🥦',
+  Dairy: '🥛',
+  Beef: '🥩',
+  Poultry: '🍗',
+  'Protein staples': '🥚',
+  Breakfast: '🥞',
+  Pantry: '🫙',
+  Snacks: '🍿',
+};
+
 const dairyKeywords = [
   'milk',
   'yogurt',
@@ -94,12 +106,17 @@ export function BuilderPage({ catalog, savedPlan }) {
   const [search, setSearch] = useState('');
   const [customItem, setCustomItem] = useState({ name: '', price: '' });
   const [highlightedItemId, setHighlightedItemId] = useState(null);
+  const [bouncingCardId, setBouncingCardId] = useState(null);
   const highlightTimerRef = useRef(null);
+  const bounceTimerRef = useRef(null);
 
   useEffect(() => {
     return () => {
       if (highlightTimerRef.current) {
         clearTimeout(highlightTimerRef.current);
+      }
+      if (bounceTimerRef.current) {
+        clearTimeout(bounceTimerRef.current);
       }
     };
   }, []);
@@ -175,6 +192,13 @@ export function BuilderPage({ catalog, savedPlan }) {
 
   function addItem(item) {
     triggerAddedAnimation(item.id);
+
+    setBouncingCardId(item.id);
+    if (bounceTimerRef.current) clearTimeout(bounceTimerRef.current);
+    bounceTimerRef.current = setTimeout(() => {
+      setBouncingCardId(null);
+      bounceTimerRef.current = null;
+    }, 500);
 
     setBasket((current) => {
       const existing = current.find((entry) => entry.id === item.id);
@@ -255,7 +279,9 @@ export function BuilderPage({ catalog, savedPlan }) {
             <br></br>
             <br></br>
           </p>
-          <p className="interaction-note">Tap an item card to add it. Edit quantity directly in your list.</p>
+          <p className="interaction-note">
+            Expand a category to browse items, then tap a card to add it. Edit quantity directly in your list.
+          </p>
         </div>
 
         <div className="builder-controls">
@@ -318,12 +344,15 @@ export function BuilderPage({ catalog, savedPlan }) {
 
         <div className="catalog-sections">
           {groupedCatalog.map(([groupName, items]) => (
-            <section className="catalog-section" key={groupName}>
-              <h3 className="catalog-section-title">{groupName}</h3>
+            <details className="catalog-section" key={groupName}>
+              <summary className="catalog-section-title">
+                <span>{catalogGroupEmoji[groupName] ? `${catalogGroupEmoji[groupName]} ${groupName}` : groupName}</span>
+                <span className="catalog-section-count">{items.length} items</span>
+              </summary>
               <div className="catalog-grid">
                 {items.map((item) => (
                   <article
-                    className="catalog-card catalog-card-interactive"
+                    className={`catalog-card catalog-card-interactive${bouncingCardId === item.id ? ' catalog-card-bounce' : ''}`}
                     key={item.id}
                     onClick={() => addItem(item)}
                     onKeyDown={(event) => {
@@ -345,10 +374,13 @@ export function BuilderPage({ catalog, savedPlan }) {
                       <strong>{formatCurrency(item.price)}</strong>
                       <span className="catalog-hint">Click to add</span>
                     </div>
+                    {bouncingCardId === item.id && (
+                      <span aria-live="polite" className="catalog-added-toast">Added to cart!</span>
+                    )}
                   </article>
                 ))}
               </div>
-            </section>
+            </details>
           ))}
         </div>
       </section>
